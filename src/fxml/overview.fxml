@@ -42,11 +42,11 @@
          <children>
             <Button fx:id="store" mnemonicParsing="false" text="Einlagern">
                <font>
-                  <Font name="System Bold" size="16.0" />
+                  <Font name="System Bold" size="17.0" />
                </font></Button>
             <Button fx:id="outsource" mnemonicParsing="false" text="Auslagern">
                <font>
-                  <Font name="System Bold" size="16.0" />
+                  <Font name="System Bold" size="17.0" />
                </font></Button>
          </children>
          <VBox.margin>
@@ -61,12 +61,12 @@
          <children>
             <Label text="Kategorie">
                <font>
-                  <Font size="15.0" />
+                  <Font size="18.0" />
                </font></Label>
             <ComboBox fx:id="categoryCB" prefWidth="170.0" />
             <Label text="Ort">
                <font>
-                  <Font size="15.0" />
+                  <Font size="18.0" />
                </font>
                <HBox.margin>
                   <Insets left="20.0" />
@@ -74,7 +74,7 @@
             <ComboBox fx:id="placeCB" prefWidth="170.0" />
             <Label text="Sortierung">
                <font>
-                  <Font size="15.0" />
+                  <Font size="18.0" />
                </font>
                <HBox.margin>
                   <Insets left="20.0" />

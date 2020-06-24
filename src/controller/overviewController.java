@@ -6,29 +6,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
 
 /**
  * Controls the Gui elements of the overview Window.
  */
-public class overviewController {
-
-    // the list of options available for the combo boxes
-    private final ObservableList<String> categoryOptions = FXCollections.observableArrayList(
-            "Lebensmittel",
-            "Verbrauchsgüter"
-    );
-
-    private final ObservableList<String> placeOptionFood = FXCollections.observableArrayList(
-            "Kühlschrank",
-            "Vorratskammer"
-    );
-
-    private final ObservableList<String> placeOptionGoods = FXCollections.observableArrayList(
-            "Vorratsschrank",
-            "Keller"
-    );
+public class overviewController extends basicController {
 
     private final ObservableList<String> sortByOption = FXCollections.observableArrayList(
             "geöffnet",
@@ -36,8 +19,6 @@ public class overviewController {
             "alphabet"
     );
 
-    @FXML
-    private MenuBar menuBar;
 
     @FXML
     private Button store;
@@ -45,40 +26,29 @@ public class overviewController {
     private Button outsource;
 
     @FXML
-    private ComboBox<String> categoryCB;
-    @FXML
-    private ComboBox<String> placeCB;
-    @FXML
     private ComboBox<String> sortByCB;
 
 
     public void initialize(){
-        // set's the options and values for the check boxes
-        categoryCB.setItems(categoryOptions);
-        placeCB.setItems(placeOptionFood);
-        sortByCB.setItems(sortByOption);
+        // set's the options for the check boxes
+        setCategoryOptions();
 
-        categoryCB.setValue(categoryOptions.get(0));
-        placeCB.setValue(placeOptionFood.get(0));
+        sortByCB.setItems(sortByOption);
         sortByCB.setValue(sortByOption.get(0));
 
-        // changes the place option if the category is changed
-        categoryCB.setOnAction(event -> {
-            if (categoryCB.getSelectionModel().getSelectedItem().equals("Lebensmittel")){
-                placeCB.setItems(placeOptionFood);
-                placeCB.setValue(placeOptionFood.get(0));
-            }
-            else{
-                placeCB.setItems(placeOptionGoods);
-                placeCB.setValue(placeOptionGoods.get(0));
-            }
-
-        });
+        // handles the changes of the combo boxes
+        setCategoryAction();
 
         store.setOnAction(event -> {
             ProcessFxmlFiles storeArticle = new ProcessFxmlFiles("/fxml/storeArticle.fxml", "Artikel Einlager");
             Stage stage = (Stage) menuBar.getScene().getWindow();
             storeArticleController controller = (storeArticleController) storeArticle.openInExistingStage(stage);
+        });
+
+        outsource.setOnAction(event -> {
+            ProcessFxmlFiles outsourceArticle = new ProcessFxmlFiles("/fxml/outsource.fxml", "Artikel Auslagern");
+            Stage stage = (Stage) menuBar.getScene().getWindow();
+            outsourceArticleController controller = (outsourceArticleController) outsourceArticle.openInExistingStage(stage);
         });
     }
 }

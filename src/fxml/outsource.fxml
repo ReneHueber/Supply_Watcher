@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.storeArticleController">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.outsourceArticleController">
    <children>
       <MenuBar fx:id="menuBar">
         <menus>
@@ -34,19 +34,19 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Label text="Einlagern">
+      <Label text="Auslagern">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
          <font>
             <Font name="System Bold" size="27.0" />
          </font>
-         <VBox.margin>
-            <Insets bottom="5.0" />
-         </VBox.margin>
       </Label>
       <HBox alignment="CENTER" spacing="10.0">
          <children>
-            <Label text="Barecode">
+            <Label text="Barcode">
                <font>
-                  <Font size="17.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
             <TextField fx:id="barcode" />
@@ -59,60 +59,57 @@
          <children>
             <Label text="Name">
                <font>
-                  <Font size="17.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
             <TextField fx:id="name" />
             <Label text="Marke">
-               <HBox.margin>
-                  <Insets left="65.0" />
-               </HBox.margin>
                <font>
-                  <Font size="17.0" />
+                  <Font size="18.0" />
                </font>
+               <HBox.margin>
+                  <Insets left="55.0" />
+               </HBox.margin>
             </Label>
             <TextField fx:id="brand" />
          </children>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
       </HBox>
       <HBox alignment="CENTER" spacing="10.0">
          <children>
             <Label text="Kategorie">
                <font>
-                  <Font size="17.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
             <ComboBox fx:id="categoryCB" prefWidth="170.0" />
             <Label text="Ort">
-               <HBox.margin>
-                  <Insets left="61.0" />
-               </HBox.margin>
                <font>
-                  <Font size="17.0" />
+                  <Font size="18.0" />
                </font>
+               <HBox.margin>
+                  <Insets left="50.0" />
+               </HBox.margin>
             </Label>
             <ComboBox fx:id="placeCB" prefWidth="170.0" />
          </children>
       </HBox>
       <HBox alignment="CENTER" spacing="10.0">
          <children>
-            <Label text="Füllmenge">
+            <Label text="Einheit">
                <font>
-                  <Font size="17.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="capacity" maxWidth="100.0" />
-            <Label text="Mindesmenge">
+            <ComboBox fx:id="unitCB" prefWidth="150.0" />
+            <Label text="Menge">
+               <font>
+                  <Font size="18.0" />
+               </font>
                <HBox.margin>
-                  <Insets left="107.0" />
+                  <Insets left="135.0" />
                </HBox.margin>
-               <font>
-                  <Font size="17.0" />
-               </font>
             </Label>
-            <TextField fx:id="minimum" maxWidth="100.0" />
+            <TextField fx:id="amount" maxWidth="100.0" />
          </children>
          <VBox.margin>
             <Insets bottom="5.0" />
@@ -122,18 +119,12 @@
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
-         <VBox.margin>
-            <Insets bottom="-5.0" />
-         </VBox.margin>
       </Button>
-      <Label text="Letzte Artikel ohne Barcode">
+      <Label text="Eingelagerte Artikel ohne Barecode">
          <font>
-            <Font name="System Bold" size="20.0" />
+            <Font name="System Bold" size="22.0" />
          </font>
-         <VBox.margin>
-            <Insets bottom="-5.0" top="10.0" />
-         </VBox.margin>
       </Label>
-      <ListView fx:id="lastArticles" prefHeight="244.0" prefWidth="1024.0" />
+      <ListView fx:id="articleLV" prefHeight="235.0" prefWidth="1024.0" />
    </children>
 </VBox>
