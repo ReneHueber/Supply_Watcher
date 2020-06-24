@@ -1,6 +1,6 @@
 module Supply.Watcher {
-    requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.controls;
 
     opens controller;
 }
