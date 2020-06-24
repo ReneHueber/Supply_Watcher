@@ -29,7 +29,7 @@ public class ProcessFxmlFiles {
      * Loads the Scene, and creates the new Stage.
      * @return The Controller of the Scene
      */
-    protected Object openInNewStage(){
+    public Object openInNewStage(){
         // loads the fxml an the controller
         loadFxml();
 
@@ -48,7 +48,7 @@ public class ProcessFxmlFiles {
      * @param stage The existing Stage
      * @return The Controller of the Scene
      */
-    protected Object openInExistingStage(Stage stage){
+    public Object openInExistingStage(Stage stage){
         // loads the fxml and the controller
         loadFxml();
 

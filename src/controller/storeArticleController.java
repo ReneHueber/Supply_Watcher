@@ -4,15 +4,10 @@ import gui.ProcessFxmlFiles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuBar;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-/**
- * Controls the Gui elements of the overview Window.
- */
-public class overviewController {
+public class storeArticleController {
 
     // the list of options available for the combo boxes
     private final ObservableList<String> categoryOptions = FXCollections.observableArrayList(
@@ -30,37 +25,44 @@ public class overviewController {
             "Keller"
     );
 
-    private final ObservableList<String> sortByOption = FXCollections.observableArrayList(
-            "geöffnet",
-            "mindesmenge",
-            "alphabet"
-    );
-
     @FXML
     private MenuBar menuBar;
 
     @FXML
-    private Button store;
+    private TextField barcode;
+
     @FXML
-    private Button outsource;
+    private TextField name;
+    @FXML
+    private TextField brand;
 
     @FXML
     private ComboBox<String> categoryCB;
     @FXML
     private ComboBox<String> placeCB;
+
     @FXML
-    private ComboBox<String> sortByCB;
+    private TextField capacity;
+    @FXML
+    private TextField minimum;
+
+    @FXML
+    private Button confirm;
+
+    @FXML
+    // TODO changes to real object
+    private ListView<String> lastArticles;
 
 
     public void initialize(){
+
         // set's the options and values for the check boxes
         categoryCB.setItems(categoryOptions);
         placeCB.setItems(placeOptionFood);
-        sortByCB.setItems(sortByOption);
 
         categoryCB.setValue(categoryOptions.get(0));
         placeCB.setValue(placeOptionFood.get(0));
-        sortByCB.setValue(sortByOption.get(0));
+
 
         // changes the place option if the category is changed
         categoryCB.setOnAction(event -> {
@@ -75,10 +77,10 @@ public class overviewController {
 
         });
 
-        store.setOnAction(event -> {
-            ProcessFxmlFiles storeArticle = new ProcessFxmlFiles("/fxml/storeArticle.fxml", "Artikel Einlager");
+        confirm.setOnAction(event -> {
+            ProcessFxmlFiles overview = new ProcessFxmlFiles("/fxml/overview.fxml", "Übersicht");
             Stage stage = (Stage) menuBar.getScene().getWindow();
-            storeArticleController controller = (storeArticleController) storeArticle.openInExistingStage(stage);
+            overviewController controller = (overviewController) overview.openInExistingStage(stage);
         });
     }
 }
