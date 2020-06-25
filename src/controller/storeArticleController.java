@@ -8,6 +8,8 @@ public class storeArticleController extends basicController {
     @FXML
     private TextField capacity;
     @FXML
+    private Label capacityError;
+    @FXML
     private TextField minimum;
 
     @FXML
@@ -27,6 +29,32 @@ public class storeArticleController extends basicController {
 
         confirm.setOnAction(event -> {
             overviewController controller = openOverviewWindow();
+        });
+
+        handleNameError();
+
+        /*
+        * checks if the capacity input is correct
+        * if the input is not empty
+        * if the input is a number
+        * if the input is bigger than 0
+         */
+        capacity.setOnKeyReleased(event -> {
+            if (capacity.getText().isEmpty()){
+                handleErrorLabel(capacityError, "Menge angeben!", true);
+            }
+            else {
+                try {
+                    int number = Integer.parseInt(capacity.getText());
+                    if (number <= 0)
+                        handleErrorLabel(capacityError, "Menge größer als 0!", true);
+                    else
+                        handleErrorLabel(capacityError, "", false);
+
+                } catch (NumberFormatException e){
+                    handleErrorLabel(capacityError, "Zahl eingeben!", true);
+                }
+            }
         });
     }
 }

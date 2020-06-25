@@ -4,10 +4,7 @@ import gui.ProcessFxmlFiles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 /**
@@ -40,15 +37,14 @@ public class basicController {
     @FXML
     protected TextField name;
     @FXML
+    protected Label nameError;
+    @FXML
     protected TextField brand;
 
     @FXML
     protected ComboBox<String> categoryCB;
     @FXML
     protected ComboBox<String> placeCB;
-
-    @FXML
-    protected Button confirm;
 
     /**
      * Set's the available options, and the first value for the check boxes
@@ -78,6 +74,36 @@ public class basicController {
             }
 
         });
+    }
+
+    /**
+     * Handles the basic error message if the name is empty
+     */
+    protected void handleNameError(){
+        name.setOnKeyReleased(event -> {
+            if (name.getText().isEmpty())
+                handleErrorLabel(nameError, "Name eingeben!", true);
+            else
+                handleErrorLabel(nameError, "", false);
+        });
+    }
+
+    /**
+     * Displays the passed error Massage
+     * or hides the error Massage
+     * @param errorLabel Error Label
+     * @param text Displayed error Massage
+     * @param displayError If the error Label should be displayed or hide
+     */
+    protected void handleErrorLabel(Label errorLabel, String text, boolean displayError){
+        if (displayError){
+            errorLabel.setVisible(true);
+            errorLabel.setText(text);
+        }
+        else{
+            errorLabel.setText("");
+            errorLabel.setVisible(false);
+        }
     }
 
     /**
