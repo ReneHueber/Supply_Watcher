@@ -49,7 +49,7 @@ public class outsourceArticleController extends basicController {
         * if the input is not empty
         * if the input is a number
         * if the number is bigger than 0
-        * if the number is smaller than 100 if percent is choosen as unit
+        * if the number is smaller than 100 if percent is chosen as unit
          */
         amount.setOnKeyReleased(event -> {
             if (amount.getText().isEmpty())

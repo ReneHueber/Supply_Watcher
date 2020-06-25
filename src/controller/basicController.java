@@ -89,8 +89,8 @@ public class basicController {
     }
 
     /**
-     * Displays the passed error Massage
-     * or hides the error Massage
+     * Displays the passed error Massage or hides the error Massage.
+     * True Error Massage displayed
      * @param errorLabel Error Label
      * @param text Displayed error Massage
      * @param displayError If the error Label should be displayed or hide

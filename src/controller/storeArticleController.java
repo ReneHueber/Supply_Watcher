@@ -11,6 +11,8 @@ public class storeArticleController extends basicController {
     private Label capacityError;
     @FXML
     private TextField minimum;
+    @FXML
+    private Label minimumError;
 
     @FXML
     private Button confirm;
@@ -33,28 +35,42 @@ public class storeArticleController extends basicController {
 
         handleNameError();
 
-        /*
-        * checks if the capacity input is correct
-        * if the input is not empty
-        * if the input is a number
-        * if the input is bigger than 0
-         */
+        // checks if the inputs are correct
         capacity.setOnKeyReleased(event -> {
             if (capacity.getText().isEmpty()){
                 handleErrorLabel(capacityError, "Menge angeben!", true);
             }
             else {
-                try {
-                    int number = Integer.parseInt(capacity.getText());
-                    if (number <= 0)
-                        handleErrorLabel(capacityError, "Menge größer als 0!", true);
-                    else
-                        handleErrorLabel(capacityError, "", false);
-
-                } catch (NumberFormatException e){
-                    handleErrorLabel(capacityError, "Zahl eingeben!", true);
-                }
+               checkInputNumber(capacity, capacityError);
             }
         });
+
+        minimum.setOnKeyReleased(event -> {
+            if (!minimum.getText().isEmpty()){
+                checkInputNumber(minimum, minimumError);
+            }
+            else{
+                handleErrorLabel(minimumError, "", false);
+            }
+
+        });
+    }
+
+    /**
+     * Check is the input is a number and if it is bigger than 0
+     * @param input Input Text Field
+     * @param errorLabel Error Label to display the error
+     */
+    private void checkInputNumber(TextField input, Label errorLabel){
+        try {
+            int number = Integer.parseInt(input.getText());
+            if (number <= 0)
+                handleErrorLabel(errorLabel, "Menge größer als 0!", true);
+            else
+                handleErrorLabel(errorLabel, "", false);
+
+        } catch (NumberFormatException e){
+            handleErrorLabel(errorLabel, "Zahl eingeben!", true);
+        }
     }
 }
