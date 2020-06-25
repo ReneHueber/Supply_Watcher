@@ -1,10 +1,20 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 public class storeArticleController extends basicController {
 
+    private final ObservableList<String> unitOptions = FXCollections.observableArrayList(
+            "Gramm",
+            "ml",
+            "Stück"
+    );
+
+    @FXML
+    private ComboBox<String> unitCB;
     @FXML
     private TextField capacity;
     @FXML
@@ -28,6 +38,9 @@ public class storeArticleController extends basicController {
 
         // handles the changes of the combo boxes
         setCategoryAction();
+
+        unitCB.setItems(unitOptions);
+        unitCB.setValue(unitOptions.get(0));
 
         confirm.setOnAction(event -> {
             overviewController controller = openOverviewWindow();

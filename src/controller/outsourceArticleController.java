@@ -9,6 +9,7 @@ public class outsourceArticleController extends basicController {
 
     private final ObservableList<String> unitOptions = FXCollections.observableArrayList(
             "Gramm",
+            "ml",
             "Prozent"
     );
 
