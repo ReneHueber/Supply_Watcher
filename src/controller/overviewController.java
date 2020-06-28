@@ -8,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
+import database.connect;
+
 /**
  * Controls the Gui elements of the overview Window.
  */
@@ -30,6 +32,9 @@ public class overviewController extends basicController {
 
 
     public void initialize(){
+        connect con = new connect();
+        con.connectionDemo();
+
         // set's the options for the check boxes
         setCategoryOptions();
 
