@@ -5,7 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class outsourceArticleController extends basicController {
+public class OutsourceArticleController extends BasicController {
 
     private final ObservableList<String> unitOptions = FXCollections.observableArrayList(
             "Gramm",
@@ -39,7 +39,7 @@ public class outsourceArticleController extends basicController {
 
         // handles the click of the confirm Button
         confirm.setOnAction(event -> {
-            overviewController controller = openOverviewWindow();
+            OverviewController controller = openOverviewWindow();
         });
 
         handleNameError();

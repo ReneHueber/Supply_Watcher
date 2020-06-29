@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 /**
  * Basic functions and gui elements that are equal at 3 controller classes
  */
-public class basicController {
+public class BasicController {
 
     // the list of options available for the combo boxes
     protected final ObservableList<String> categoryOptions = FXCollections.observableArrayList(
@@ -110,9 +110,9 @@ public class basicController {
      * Opens the overview Window in the existing Stage.
      * @return The controller of the overview Window
      */
-    protected overviewController openOverviewWindow(){
+    protected OverviewController openOverviewWindow(){
         ProcessFxmlFiles overview = new ProcessFxmlFiles("/fxml/overview.fxml", "Übersicht");
         Stage stage = (Stage) menuBar.getScene().getWindow();
-        return (overviewController) overview.openInExistingStage(stage);
+        return (OverviewController) overview.openInExistingStage(stage);
     }
 }

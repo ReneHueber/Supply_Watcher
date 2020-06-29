@@ -1,5 +1,6 @@
 package controller;
 
+import database.WriteToDb;
 import gui.ProcessFxmlFiles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,12 +9,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
-import database.connect;
-
 /**
  * Controls the Gui elements of the overview Window.
  */
-public class overviewController extends basicController {
+public class OverviewController extends BasicController {
 
     private final ObservableList<String> sortByOption = FXCollections.observableArrayList(
             "geöffnet",
@@ -32,9 +31,6 @@ public class overviewController extends basicController {
 
 
     public void initialize(){
-        connect con = new connect();
-        con.connectionDemo();
-
         // set's the options for the check boxes
         setCategoryOptions();
 
@@ -47,13 +43,13 @@ public class overviewController extends basicController {
         store.setOnAction(event -> {
             ProcessFxmlFiles storeArticle = new ProcessFxmlFiles("/fxml/storeArticle.fxml", "Artikel Einlager");
             Stage stage = (Stage) menuBar.getScene().getWindow();
-            storeArticleController controller = (storeArticleController) storeArticle.openInExistingStage(stage);
+            StoreArticleController controller = (StoreArticleController) storeArticle.openInExistingStage(stage);
         });
 
         outsource.setOnAction(event -> {
             ProcessFxmlFiles outsourceArticle = new ProcessFxmlFiles("/fxml/outsource.fxml", "Artikel Auslagern");
             Stage stage = (Stage) menuBar.getScene().getWindow();
-            outsourceArticleController controller = (outsourceArticleController) outsourceArticle.openInExistingStage(stage);
+            OutsourceArticleController controller = (OutsourceArticleController) outsourceArticle.openInExistingStage(stage);
         });
     }
 }
