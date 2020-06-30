@@ -2,13 +2,12 @@ package controller;
 
 import database.ReadFromDb;
 import database.WriteToDb;
+import gui.ProcessFxmlFiles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import objects.Product;
-
-import java.util.ArrayList;
 
 public class StoreArticleController extends BasicController {
 
@@ -17,7 +16,6 @@ public class StoreArticleController extends BasicController {
             "ml",
             "Stück"
     );
-
     @FXML
     private ComboBox<String> unitCB;
     @FXML
@@ -48,6 +46,7 @@ public class StoreArticleController extends BasicController {
         unitCB.setValue(unitOptions.get(0));
 
         confirm.setOnAction(event -> {
+            // TODO check if product already existing
             if (!nameError.isVisible() && !capacityError.isVisible() && !minimumError.isVisible()){
                 String stmt = "INSERT INTO products(barcode, name, brand, category, place, unit, capacity, minAmount) VALUES (?,?,?,?,?,?,?,?)";
                 String barcodeVale = barcode.getText();
@@ -67,33 +66,49 @@ public class StoreArticleController extends BasicController {
             }
         });
 
-        handleNameError();
+        basicInputLabelError(name, nameError, "Name eingeben!");
+        basicInputLabelError(brand, brandError, "Marke eingeben!");
 
         barcode.setOnKeyReleased(event -> {
             if (event.getCode().toString().equals("ENTER")){
                 String stmt = "SELECT barcode, name, brand, category, place, unit, capacity, minAmount FROM products WHERE barcode = '" + barcode.getText() + "'";
-                ArrayList<Product> products = ReadFromDb.getProducts(stmt);
+                ObservableList<Product> products = ReadFromDb.getProducts(stmt);
 
                 if (products != null){
                     if (products.size() == 0){
                         name.requestFocus();
+                        openScanResultWindow(false);
                     }
                     else if (products.size() == 1){
-                        Product selectedProduct = products.get(0);
-                        name.setText(selectedProduct.getName());
-                        brand.setText(selectedProduct.getBrand());
-                        categoryCB.setValue(selectedProduct.getCategory());
-                        placeCB.setValue(selectedProduct.getPlace());
-                        unitCB.setValue(selectedProduct.getUnit());
-                        capacity.setText(Integer.toString(selectedProduct.getCapacity()));
-                        minimum.setText(Float.toString(selectedProduct.getMinAmount()));
+                        setProductValues(products.get(0));
+                        openScanResultWindow(true);
                     }
                     else {
-                        // TODO open Window to select
-                        System.out.println("Open Window");
+                        openSelectProductWindow(products);
                     }
                 }
 
+            }
+        });
+
+        name.setOnKeyReleased(event -> {
+            if (event.getCode().toString().equals("ENTER")){
+                String stmt = "SELECT barcode, name, brand, category, place, unit, capacity, minAmount FROM products WHERE name LIKE '%" + name.getText() + "%'";
+                ObservableList<Product> products = ReadFromDb.getProducts(stmt);
+
+                if (products != null){
+                    if (products.size() == 0){
+                        brand.requestFocus();
+                        openScanResultWindow(false);
+                    }
+                    else if (products.size() == 1){
+                        setProductValues(products.get(0));
+                        openScanResultWindow(true);
+                    }
+                    else {
+                        openSelectProductWindow(products);
+                    }
+                }
             }
         });
 
@@ -134,5 +149,33 @@ public class StoreArticleController extends BasicController {
         } catch (NumberFormatException e){
             handleErrorLabel(errorLabel, "Zahl eingeben!", true);
         }
+    }
+
+    /**
+     * Set's the Values of the selected Product.
+     * @param selectedProduct The selected Product
+     */
+    protected void setProductValues(Product selectedProduct){
+        barcode.setText(selectedProduct.getBarcode());
+        name.setText(selectedProduct.getName());
+        brand.setText(selectedProduct.getBrand());
+        categoryCB.setValue(selectedProduct.getCategory());
+        placeCB.setValue(selectedProduct.getPlace());
+        unitCB.setValue(selectedProduct.getUnit());
+        capacity.setText(Integer.toString(selectedProduct.getCapacity()));
+        minimum.setText(Float.toString(selectedProduct.getMinAmount()));
+    }
+
+    private void openScanResultWindow(boolean scanResult){
+        ProcessFxmlFiles resultWindow = new ProcessFxmlFiles("/fxml/scanResult.fxml", "Scan Ergebniss");
+        ScanResultController controller = (ScanResultController) resultWindow.openInNewStage();
+        controller.setScanResult(scanResult);
+    }
+
+    private void openSelectProductWindow(ObservableList<Product> products){
+        ProcessFxmlFiles selectProducts = new ProcessFxmlFiles("/fxml/selectProductWindow.fxml", "Produkt wählen");
+        SelectProductController controller = (SelectProductController) selectProducts.openInNewStage();
+        controller.setValues(products);
+        controller.setParentController(this);
     }
 }

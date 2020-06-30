@@ -4,4 +4,5 @@ module Supply.Watcher {
     requires java.sql;
 
     opens controller;
+    opens objects to javafx.base;
 }

@@ -1,5 +1,7 @@
 package database;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import objects.Product;
 
 import java.sql.Connection;
@@ -10,8 +12,8 @@ import java.util.ArrayList;
 
 public class ReadFromDb {
 
-    public static ArrayList<Product> getProducts(String sqlStmt){
-        ArrayList<Product> products = new ArrayList<>();
+    public static ObservableList<Product> getProducts(String sqlStmt){
+        ObservableList<Product> products = FXCollections.observableArrayList();
 
         try (Connection con = Connect.connectDb()) {
             assert con != null;

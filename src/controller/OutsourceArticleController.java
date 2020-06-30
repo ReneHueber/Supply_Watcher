@@ -42,7 +42,8 @@ public class OutsourceArticleController extends BasicController {
             OverviewController controller = openOverviewWindow();
         });
 
-        handleNameError();
+        basicInputLabelError(name, nameError, "Name eingeben!");
+        basicInputLabelError(brand, brandError, "Marke eingeben!");
 
 
         /*

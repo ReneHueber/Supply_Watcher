@@ -38,8 +38,11 @@ public class BasicController {
     protected TextField name;
     @FXML
     protected Label nameError;
+    // TODO create brandError Label and implement function
     @FXML
     protected TextField brand;
+    @FXML
+    protected Label brandError;
 
     @FXML
     protected ComboBox<String> categoryCB;
@@ -77,14 +80,16 @@ public class BasicController {
     }
 
     /**
-     * Handles the basic error message if the name is empty
+     * Handles the basic error message if the a input Text Field is empty.
+     * @param input The Text Field to check
+     * @param errorLabel The Label witch should display the error
      */
-    protected void handleNameError(){
-        name.setOnKeyReleased(event -> {
-            if (name.getText().isEmpty())
-                handleErrorLabel(nameError, "Name eingeben!", true);
+    protected void basicInputLabelError(TextField input, Label errorLabel, String massage){
+        input.setOnKeyReleased(event -> {
+            if (input.getText().isEmpty())
+                handleErrorLabel(errorLabel, massage, true);
             else
-                handleErrorLabel(nameError, "", false);
+                handleErrorLabel(errorLabel, "", false);
         });
     }
 
