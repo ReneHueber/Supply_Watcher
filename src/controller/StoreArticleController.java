@@ -77,11 +77,12 @@ public class StoreArticleController extends BasicController {
                 if (products != null){
                     if (products.size() == 0){
                         name.requestFocus();
-                        openScanResultWindow(false);
+                        openScanResultWindow(false, "Scan FALSCH!", "Produkt nicht in Datenbank");
                     }
                     else if (products.size() == 1){
                         setProductValues(products.get(0));
-                        openScanResultWindow(true);
+                        openScanResultWindow(true, "Scan OKAY!", products.get(0).getName() + " eingelagert");
+                        clearAllInputs();
                     }
                     else {
                         openSelectProductWindow(products);
@@ -99,11 +100,12 @@ public class StoreArticleController extends BasicController {
                 if (products != null){
                     if (products.size() == 0){
                         brand.requestFocus();
-                        openScanResultWindow(false);
+                        openScanResultWindow(false, "Scan FALSCH!", "Produkt nicht in Datenbank");
                     }
                     else if (products.size() == 1){
                         setProductValues(products.get(0));
-                        openScanResultWindow(true);
+                        openScanResultWindow(true, "Scan OKAY!", products.get(0).getName() + " eingelagert");
+                        clearAllInputs();
                     }
                     else {
                         openSelectProductWindow(products);
@@ -166,16 +168,36 @@ public class StoreArticleController extends BasicController {
         minimum.setText(Float.toString(selectedProduct.getMinAmount()));
     }
 
-    private void openScanResultWindow(boolean scanResult){
+    /**
+     * Opens the scan result in a new window, displays if the product is in the db and stored or it have to be added.
+     * @param scanResult If the scan product is in the db
+     * @param heading Text for the Heading of the scan result window
+     * @param message Text for the Massage of the scan result window
+     */
+    private void openScanResultWindow(boolean scanResult, String heading, String message){
         ProcessFxmlFiles resultWindow = new ProcessFxmlFiles("/fxml/scanResult.fxml", "Scan Ergebniss");
         ScanResultController controller = (ScanResultController) resultWindow.openInNewStage();
-        controller.setScanResult(scanResult);
+        controller.setScanResult(scanResult, heading, message);
     }
 
+    /**
+     * Opens select product in a new window, to choose witch product you want to chose.
+     * @param products List of the matching products
+     */
     private void openSelectProductWindow(ObservableList<Product> products){
         ProcessFxmlFiles selectProducts = new ProcessFxmlFiles("/fxml/selectProductWindow.fxml", "Produkt wählen");
         SelectProductController controller = (SelectProductController) selectProducts.openInNewStage();
         controller.setValues(products);
         controller.setParentController(this);
+    }
+
+    /**
+     * Clear all the inputs, to scan a new product.
+     */
+    protected void clearAllInputs(){
+        clearCommonInputs();
+        unitCB.setValue(unitOptions.get(0));
+        capacity.setText("");
+        minimum.setText("");
     }
 }

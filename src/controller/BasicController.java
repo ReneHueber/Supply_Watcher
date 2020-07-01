@@ -38,7 +38,7 @@ public class BasicController {
     protected TextField name;
     @FXML
     protected Label nameError;
-    // TODO create brandError Label and implement function
+
     @FXML
     protected TextField brand;
     @FXML
@@ -119,5 +119,17 @@ public class BasicController {
         ProcessFxmlFiles overview = new ProcessFxmlFiles("/fxml/overview.fxml", "Übersicht");
         Stage stage = (Stage) menuBar.getScene().getWindow();
         return (OverviewController) overview.openInExistingStage(stage);
+    }
+
+    /**
+     * Clears the barcode, name, brand, categoryCB and placeCB
+     */
+    protected void clearCommonInputs(){
+        barcode.setText("");
+        name.setText("");
+        brand.setText("");
+        categoryCB.setValue(categoryOptions.get(0));
+        placeCB.setValue(placeOptionFood.get(0));
+
     }
 }

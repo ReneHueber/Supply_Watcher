@@ -11,22 +11,22 @@ import java.util.TimerTask;
 public class ScanResultController {
 
     @FXML
-    private Label heading;
+    private Label headingLB;
     @FXML
-    private Label text;
+    private Label textLB;
 
     /**
      * Set a Massage if the Scan Result is in the Db or not.
      * @param scanOkay Product is in Db or not
      */
-    protected void setScanResult(boolean scanOkay) {
-        if (scanOkay) {
-            heading.setStyle("-fx-text-fill: #46a651");
-        } else {
-            heading.setText("Scan FALSCH");
-            text.setText("Produkt in Datenbank speichern");
-            heading.setStyle("-fx-text-fill: #a64646");
-        }
+    protected void setScanResult(boolean scanOkay, String heading, String text) {
+        if (scanOkay)
+            headingLB.setStyle("-fx-text-fill: #46a651");
+        else
+            headingLB.setStyle("-fx-text-fill: #a64646");
+
+        headingLB.setText(heading);
+        textLB.setText(text);
 
         startTimer();
     }
@@ -40,11 +40,11 @@ public class ScanResultController {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    Stage stage = (Stage) heading.getScene().getWindow();
+                    Stage stage = (Stage) headingLB.getScene().getWindow();
                     stage.close();
                     timer.cancel();
                 });
             }
-        },1000);
+        },1500);
     }
 }
