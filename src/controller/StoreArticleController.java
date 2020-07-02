@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import objects.Product;
 
 public class StoreArticleController extends BasicController {
@@ -32,12 +33,29 @@ public class StoreArticleController extends BasicController {
 
     @FXML
     // TODO changes to real object
-    private ListView<String> lastArticles;
+    private TableView<Product> productsTV;
+    @FXML
+    private TableColumn<Product, String> barcodeTC;
+    @FXML
+    private TableColumn<Product, String> nameTC;
+    @FXML
+    private TableColumn<Product, String> brandTC;
+    @FXML
+    private TableColumn<Product, String> categoryTC;
+    @FXML
+    private TableColumn<Product, String> placeTC;
+    @FXML
+    private TableColumn<Product, String> unitTC;
+    @FXML
+    private TableColumn<Product, Integer> capacityTC;
 
 
     public void initialize(){
         // set's the category options
         setCategoryOptions();
+
+        // setup of the table view and set's the default values
+        setupTableView();
 
         // handles the changes of the combo boxes
         setCategoryAction();
@@ -47,7 +65,7 @@ public class StoreArticleController extends BasicController {
 
         confirm.setOnAction(event -> {
             // TODO check if product already existing
-            if (!nameError.isVisible() && !capacityError.isVisible() && !minimumError.isVisible()){
+            if (!nameError.isVisible() && !brandError.isVisible() && !capacityError.isVisible() && !minimumError.isVisible()){
                 String stmt = "INSERT INTO products(barcode, name, brand, category, place, unit, capacity, minAmount) VALUES (?,?,?,?,?,?,?,?)";
                 String barcodeVale = barcode.getText();
                 String nameValue = name.getText();
@@ -62,7 +80,8 @@ public class StoreArticleController extends BasicController {
                     minValue = "0.0";
 
                 WriteToDb.executeWriteStmt(stmt, barcodeVale, nameValue, brandValue, categoryValue, placeValue, unitVale, capacityValue, minValue);
-                OverviewController controller = openOverviewWindow();
+                openScanResultWindow(true, "Product gespeichert!", nameValue + " eingelagert");
+                clearAllInputs();
             }
         });
 
@@ -199,5 +218,20 @@ public class StoreArticleController extends BasicController {
         unitCB.setValue(unitOptions.get(0));
         capacity.setText("");
         minimum.setText("");
+    }
+
+    private void setupTableView(){
+        barcodeTC.setCellValueFactory(new PropertyValueFactory<>("barcode"));
+        nameTC.setCellValueFactory(new PropertyValueFactory<>("name"));
+        brandTC.setCellValueFactory(new PropertyValueFactory<>("brand"));
+        categoryTC.setCellValueFactory(new PropertyValueFactory<>("category"));
+        placeTC.setCellValueFactory(new PropertyValueFactory<>("place"));
+        unitTC.setCellValueFactory(new PropertyValueFactory<>("unit"));
+        capacityTC.setCellValueFactory(new PropertyValueFactory<>("capacity"));
+    }
+
+    protected void setTableViewValues(String sqlStmt){
+        ObservableList<Product> products = ReadFromDb.getProducts(sqlStmt);
+        productsTV.setItems(products);
     }
 }

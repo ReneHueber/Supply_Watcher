@@ -2,14 +2,14 @@ package objects;
 
 public class Product {
 
-    private String barcode;
-    private String name;
-    private String brand;
-    private String category;
-    private String place;
-    private String unit;
-    private int capacity;
-    private float minAmount;
+    private final String barcode;
+    private final String name;
+    private final String brand;
+    private final String category;
+    private final String place;
+    private final String unit;
+    private final int capacity;
+    private final float minAmount;
 
     public Product(String barcode, String name, String brand, String category, String place, String unit, int capacity, float minAmount) {
         this.barcode = barcode;

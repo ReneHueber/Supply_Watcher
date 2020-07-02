@@ -28,8 +28,6 @@ public class SelectProductController {
     @FXML
     private Button confirm;
 
-    private Stage parentStage;
-
     private StoreArticleController parentController;
 
 
@@ -41,6 +39,7 @@ public class SelectProductController {
 
             if (selectedProduct != null){
                 Stage currentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                // TODO store product and open scan Text
                 parentController.setProductValues(selectedProduct);
                 currentStage.close();
             }
@@ -57,10 +56,6 @@ public class SelectProductController {
 
     protected void setValues(ObservableList<Product> products){
         productsTV.setItems(products);
-    }
-
-    protected void setStage(Stage stage){
-        this.parentStage = stage;
     }
 
     protected void setParentController(StoreArticleController parentController){
