@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import objects.Product;
+import objects.StoredProduct;
 
 public class StoreArticleController extends BasicController {
 
@@ -81,6 +82,7 @@ public class StoreArticleController extends BasicController {
 
                 WriteToDb.executeWriteStmt(stmt, barcodeVale, nameValue, brandValue, categoryValue, placeValue, unitVale, capacityValue, minValue);
                 openScanResultWindow(true, "Product gespeichert!", nameValue + " eingelagert");
+                // TODO store product in db
                 clearAllInputs();
             }
         });
@@ -90,22 +92,24 @@ public class StoreArticleController extends BasicController {
 
         barcode.setOnKeyReleased(event -> {
             if (event.getCode().toString().equals("ENTER")){
-                String stmt = "SELECT barcode, name, brand, category, place, unit, capacity, minAmount FROM products WHERE barcode = '" + barcode.getText() + "'";
+                String stmt = "SELECT id, barcode, name, brand, category, place, unit, capacity, minAmount FROM products WHERE barcode = '" + barcode.getText() + "'";
                 ObservableList<Product> products = ReadFromDb.getProducts(stmt);
 
-                if (products != null){
-                    if (products.size() == 0){
-                        name.requestFocus();
-                        openScanResultWindow(false, "Scan FALSCH!", "Produkt nicht in Datenbank");
-                    }
-                    else if (products.size() == 1){
-                        setProductValues(products.get(0));
-                        openScanResultWindow(true, "Scan OKAY!", products.get(0).getName() + " eingelagert");
-                        clearAllInputs();
-                    }
-                    else {
-                        openSelectProductWindow(products);
-                    }
+                if (products.size() == 0){
+                    name.requestFocus();
+                    openScanResultWindow(false, "Scan FALSCH!", "Produkt nicht in Datenbank");
+                }
+                else if (products.size() == 1){
+                    setProductValues(products.get(0));
+                    openScanResultWindow(true, "Scan OKAY!", products.get(0).getName() + " eingelagert");
+
+                    // stores the Product into to stored products Db
+                    storeProduct(products.get(0));
+
+                    clearAllInputs();
+                }
+                else {
+                    openSelectProductWindow(products);
                 }
 
             }
@@ -113,22 +117,24 @@ public class StoreArticleController extends BasicController {
 
         name.setOnKeyReleased(event -> {
             if (event.getCode().toString().equals("ENTER")){
-                String stmt = "SELECT barcode, name, brand, category, place, unit, capacity, minAmount FROM products WHERE name LIKE '%" + name.getText() + "%'";
+                String stmt = "SELECT id, barcode, name, brand, category, place, unit, capacity, minAmount FROM products WHERE name LIKE '%" + name.getText() + "%'";
                 ObservableList<Product> products = ReadFromDb.getProducts(stmt);
 
-                if (products != null){
-                    if (products.size() == 0){
-                        brand.requestFocus();
-                        openScanResultWindow(false, "Scan FALSCH!", "Produkt nicht in Datenbank");
-                    }
-                    else if (products.size() == 1){
-                        setProductValues(products.get(0));
-                        openScanResultWindow(true, "Scan OKAY!", products.get(0).getName() + " eingelagert");
-                        clearAllInputs();
-                    }
-                    else {
-                        openSelectProductWindow(products);
-                    }
+                if (products.size() == 0){
+                    brand.requestFocus();
+                    openScanResultWindow(false, "Scan FALSCH!", "Produkt nicht in Datenbank");
+                }
+                else if (products.size() == 1){
+                    setProductValues(products.get(0));
+                    openScanResultWindow(true, "Scan OKAY!", products.get(0).getName() + " eingelagert");
+
+                    // stores the Product into to stored products Db
+                    storeProduct(products.get(0));
+
+                    clearAllInputs();
+                }
+                else {
+                    openSelectProductWindow(products);
                 }
             }
         });
@@ -220,6 +226,9 @@ public class StoreArticleController extends BasicController {
         minimum.setText("");
     }
 
+    /**
+     * Set's the Vales for the Table Columns.
+     */
     private void setupTableView(){
         barcodeTC.setCellValueFactory(new PropertyValueFactory<>("barcode"));
         nameTC.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -230,8 +239,42 @@ public class StoreArticleController extends BasicController {
         capacityTC.setCellValueFactory(new PropertyValueFactory<>("capacity"));
     }
 
+    /**
+     * Get's the Values from the Database and set's it to the Table View.
+     * @param sqlStmt What values should be selected
+     */
     protected void setTableViewValues(String sqlStmt){
         ObservableList<Product> products = ReadFromDb.getProducts(sqlStmt);
         productsTV.setItems(products);
+    }
+
+    /**
+     * Get's all the stored Products with the passed productId, that are not open from the Database.
+     * @param productId The id of the search Product
+     * @return A list of all stored Product with the passed Product id.
+     */
+    private ObservableList<StoredProduct> getStoredProducts(int productId){
+        String stmt = "SELECT id, productId, open, openSince, place, productAmount, amount FROM storedProducts WHERE productId = " + productId
+                + " AND open = false";
+        return ReadFromDb.getStoredProducts(stmt);
+    }
+
+    /**
+     * Stores the product to the storedProducts Database, or increases the amount.
+     * @param selectedProduct The selected Product
+     */
+    private void storeProduct(Product selectedProduct){
+        String stmt = "";
+
+        ObservableList<StoredProduct> storedProducts = getStoredProducts(selectedProduct.getId());
+        if (storedProducts.size() > 0){
+            stmt = "UPDATE storedProducts SET amount = ? WHERE id = " + storedProducts.get(0).getId();
+            WriteToDb.executeWriteStmt(stmt, Integer.toString(storedProducts.get(0).getAmount() + 1));
+        }
+        else {
+            stmt = "INSERT INTO storedProducts(productId, open, openSince, place, productAmount, amount) VALUES (?,?,?,?,?,?)";
+            WriteToDb.executeWriteStmt(stmt, Integer.toString(selectedProduct.getId()), Integer.toString(0), null, selectedProduct.getPlace(),
+                    Integer.toString(selectedProduct.getCapacity()), Integer.toString(1));
+        }
     }
 }

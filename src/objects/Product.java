@@ -2,6 +2,7 @@ package objects;
 
 public class Product {
 
+    private final int id;
     private final String barcode;
     private final String name;
     private final String brand;
@@ -11,7 +12,8 @@ public class Product {
     private final int capacity;
     private final float minAmount;
 
-    public Product(String barcode, String name, String brand, String category, String place, String unit, int capacity, float minAmount) {
+    public Product(int id, String barcode, String name, String brand, String category, String place, String unit, int capacity, float minAmount) {
+        this.id = id;
         this.barcode = barcode;
         this.name = name;
         this.brand = brand;
@@ -20,6 +22,10 @@ public class Product {
         this.unit = unit;
         this.capacity = capacity;
         this.minAmount = minAmount;
+    }
+
+    public int getId(){
+        return id;
     }
 
     public String getBarcode() {
