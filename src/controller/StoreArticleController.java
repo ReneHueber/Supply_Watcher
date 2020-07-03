@@ -65,6 +65,7 @@ public class StoreArticleController extends BasicController {
         unitCB.setValue(unitOptions.get(0));
 
         confirm.setOnAction(event -> {
+
             // TODO check if product already existing
             if (!nameError.isVisible() && !brandError.isVisible() && !capacityError.isVisible() && !minimumError.isVisible()){
                 String stmt = "INSERT INTO products(barcode, name, brand, category, place, unit, capacity, minAmount) VALUES (?,?,?,?,?,?,?,?)";
@@ -199,7 +200,7 @@ public class StoreArticleController extends BasicController {
      * @param heading Text for the Heading of the scan result window
      * @param message Text for the Massage of the scan result window
      */
-    private void openScanResultWindow(boolean scanResult, String heading, String message){
+    protected void openScanResultWindow(boolean scanResult, String heading, String message){
         ProcessFxmlFiles resultWindow = new ProcessFxmlFiles("/fxml/scanResult.fxml", "Scan Ergebniss");
         ScanResultController controller = (ScanResultController) resultWindow.openInNewStage();
         controller.setScanResult(scanResult, heading, message);
@@ -263,7 +264,7 @@ public class StoreArticleController extends BasicController {
      * Stores the product to the storedProducts Database, or increases the amount.
      * @param selectedProduct The selected Product
      */
-    private void storeProduct(Product selectedProduct){
+    protected void storeProduct(Product selectedProduct){
         String stmt = "";
 
         ObservableList<StoredProduct> storedProducts = getStoredProducts(selectedProduct.getId());
