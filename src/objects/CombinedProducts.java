@@ -12,11 +12,11 @@ public class CombinedProducts {
     private final Date openSince;
     private final int leftCapacity;
     private final int amount;
-    private final int minAmount;
+    private final float minAmount;
 
     private final String openAsString;
 
-    public CombinedProducts(String name, String brand, String category, String place, boolean open, Date openSince, int leftCapacity, int amount, int minAmount) {
+    public CombinedProducts(String name, String brand, String category, String place, boolean open, Date openSince, int leftCapacity, int amount, float minAmount) {
         this.name = name;
         this.brand = brand;
         this.category = category;
@@ -65,7 +65,7 @@ public class CombinedProducts {
         return amount;
     }
 
-    public int getMinAmount() {
+    public float getMinAmount() {
         return minAmount;
     }
 }

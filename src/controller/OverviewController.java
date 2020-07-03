@@ -1,5 +1,6 @@
 package controller;
 
+import database.ReadFromDb;
 import database.WriteToDb;
 import gui.ProcessFxmlFiles;
 import javafx.collections.FXCollections;
@@ -9,8 +10,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import objects.CombinedProducts;
+import objects.Product;
+import objects.StoredProduct;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  * Controls the Gui elements of the overview Window.
@@ -96,5 +100,46 @@ public class OverviewController extends BasicController {
         leftCapacityTC.setCellValueFactory(new PropertyValueFactory<>("leftCapacity"));
         amountTC.setCellValueFactory(new PropertyValueFactory<>("amount"));
         minAmountTC.setCellValueFactory(new PropertyValueFactory<>("minAmount"));
+    }
+
+    /**
+     * Creates the Combined Products, values of the stored Products and the products Db.
+     * @param stmt Witch stored Products should be selected
+     * @return The combined Products
+     */
+    private ObservableList<CombinedProducts> getCombinedProducts(String stmt){
+        String sqlAllProducts = "SELECT id, barcode, name, brand, category, place, unit, capacity, minAmount FROM products";
+
+        ObservableList<StoredProduct> storedProducts = ReadFromDb.getStoredProducts(stmt);
+        ObservableList<Product> products = ReadFromDb.getProducts(sqlAllProducts);
+
+        ObservableList<CombinedProducts> combinedProducts = FXCollections.observableArrayList();
+
+        for (StoredProduct storedProduct : storedProducts){
+            Product product = products.get(storedProduct.getProductId() - 1);
+
+            String name = product.getName();
+            String brand = product.getBrand();
+            String category = product.getCategory();
+            String place = storedProduct.getPlace();
+            boolean open = storedProduct.isOpen();
+            Date openSince = storedProduct.getOpenSince();
+            int leftCapacity = storedProduct.getProductAmount();
+            int amount = storedProduct.getAmount();
+            float minAmount = product.getMinAmount();
+
+            combinedProducts.add(new CombinedProducts(name, brand, category, place, open, openSince, leftCapacity, amount, minAmount));
+        }
+
+        return combinedProducts;
+    }
+
+    /**
+     * Set's the default Values for the Table View.
+     */
+    protected void setTableViewValues(){
+        // TODO get the values specified by the right chose box option
+        String sqlStmt = "SELECT id, productId, open, openSince, place, productAmount, amount FROM storedProducts";
+        storedProductsTV.setItems(getCombinedProducts(sqlStmt));
     }
 }
