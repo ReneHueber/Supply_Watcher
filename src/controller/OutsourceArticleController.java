@@ -35,7 +35,9 @@ public class OutsourceArticleController extends BasicController {
         unitCB.setValue(unitOptions.get(0));
 
         // handles the changes of the combo box
-        setCategoryAction();
+        categoryCB.setOnAction(event -> {
+            setCategoryAction();
+        });
 
         // handles the click of the confirm Button
         confirm.setOnAction(event -> {

@@ -33,7 +33,6 @@ public class StoreArticleController extends BasicController {
     private Button confirm;
 
     @FXML
-    // TODO changes to real object
     private TableView<Product> productsTV;
     @FXML
     private TableColumn<Product, String> barcodeTC;
@@ -59,7 +58,9 @@ public class StoreArticleController extends BasicController {
         setupTableView();
 
         // handles the changes of the combo boxes
-        setCategoryAction();
+        categoryCB.setOnAction(event -> {
+            setCategoryAction();
+        });
 
         unitCB.setItems(unitOptions);
         unitCB.setValue(unitOptions.get(0));

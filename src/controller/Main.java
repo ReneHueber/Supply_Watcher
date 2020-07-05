@@ -10,7 +10,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         ProcessFxmlFiles overViewWindow = new ProcessFxmlFiles("/fxml/overview.fxml", "Übersicht");
         OverviewController controller = (OverviewController) overViewWindow.openInExistingStage(primaryStage);
-        controller.setTableViewValues();
+        String sqlStmt = "SELECT id, productId, open, openSince, place, productAmount, amount FROM storedProducts" +
+                " WHERE place = 'Kühlschrank'";
+        controller.setTableViewValues(sqlStmt, "Lebensmittel");
     }
 
 

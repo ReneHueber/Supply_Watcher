@@ -39,23 +39,23 @@ public class OverviewController extends BasicController {
     @FXML
     private TableView<CombinedProducts> storedProductsTV;
     @FXML
-    private TableColumn<String, CombinedProducts> nameTC;
+    private TableColumn<CombinedProducts, String> nameTC;
     @FXML
-    private TableColumn<String, CombinedProducts> brandTC;
+    private TableColumn<CombinedProducts, String> brandTC;
     @FXML
-    private TableColumn<String, CombinedProducts> categoryTC;
+    private TableColumn<CombinedProducts, String> categoryTC;
     @FXML
-    private TableColumn<String, CombinedProducts> placeTC;
+    private TableColumn<CombinedProducts, String> placeTC;
     @FXML
-    private TableColumn<String, CombinedProducts> openTC;
+    private TableColumn<CombinedProducts, String> openTC;
     @FXML
-    private TableColumn<Date, CombinedProducts> openSinceTC;
+    private TableColumn<CombinedProducts, Date> openSinceTC;
     @FXML
-    private TableColumn<Integer, CombinedProducts> leftCapacityTC;
+    private TableColumn<CombinedProducts, Integer> leftCapacityTC;
     @FXML
-    private TableColumn<Integer, CombinedProducts> amountTC;
+    private TableColumn<CombinedProducts, Integer> amountTC;
     @FXML
-    private TableColumn<Integer, CombinedProducts> minAmountTC;
+    private TableColumn<CombinedProducts, Integer> minAmountTC;
 
 
 
@@ -69,9 +69,6 @@ public class OverviewController extends BasicController {
         sortByCB.setItems(sortByOption);
         sortByCB.setValue(sortByOption.get(0));
 
-        // handles the changes of the combo boxes
-        setCategoryAction();
-
         store.setOnAction(event -> {
             ProcessFxmlFiles storeArticle = new ProcessFxmlFiles("/fxml/storeArticle.fxml", "Artikel Einlager");
             Stage stage = (Stage) menuBar.getScene().getWindow();
@@ -84,6 +81,33 @@ public class OverviewController extends BasicController {
             ProcessFxmlFiles outsourceArticle = new ProcessFxmlFiles("/fxml/outsource.fxml", "Artikel Auslagern");
             Stage stage = (Stage) menuBar.getScene().getWindow();
             OutsourceArticleController controller = (OutsourceArticleController) outsourceArticle.openInExistingStage(stage);
+        });
+
+        categoryCB.setOnAction(event -> {
+            setCategoryAction();
+            String sqlStmt = "SELECT id, productId, open, openSince, place, productAmount, amount FROM storedProducts" +
+                    " WHERE place = '" + placeCB.getSelectionModel().getSelectedItem() + "'";
+            setTableViewValues(sqlStmt, categoryCB.getSelectionModel().getSelectedItem());
+        });
+
+        placeCB.setOnAction(event -> {
+            String sqlStmt = "SELECT id, productId, open, openSince, place, productAmount, amount FROM storedProducts" +
+                    " WHERE place = '" + placeCB.getSelectionModel().getSelectedItem() + "'";
+            setTableViewValues(sqlStmt, categoryCB.getSelectionModel().getSelectedItem());
+        });
+
+        sortByCB.setOnAction(event -> {
+            storedProductsTV.getSortOrder().clear();
+            switch(sortByCB.getSelectionModel().getSelectedItem()){
+                case "geöffnet": openSinceTC.setSortType(TableColumn.SortType.DESCENDING);
+                                 storedProductsTV.getSortOrder().add(openSinceTC);
+                                 break;
+                case "mindesmenge": break;
+                case "alphabet" : nameTC.setSortType(TableColumn.SortType.ASCENDING);
+                                  storedProductsTV.getSortOrder().add(nameTC);
+                                  break;
+            }
+            storedProductsTV.sort();
         });
     }
 
@@ -107,7 +131,7 @@ public class OverviewController extends BasicController {
      * @param stmt Witch stored Products should be selected
      * @return The combined Products
      */
-    private ObservableList<CombinedProducts> getCombinedProducts(String stmt){
+    private ObservableList<CombinedProducts> getCombinedProducts(String stmt, String sortOption){
         String sqlAllProducts = "SELECT id, barcode, name, brand, category, place, unit, capacity, minAmount FROM products";
 
         ObservableList<StoredProduct> storedProducts = ReadFromDb.getStoredProducts(stmt);
@@ -128,7 +152,9 @@ public class OverviewController extends BasicController {
             int amount = storedProduct.getAmount();
             float minAmount = product.getMinAmount();
 
-            combinedProducts.add(new CombinedProducts(name, brand, category, place, open, openSince, leftCapacity, amount, minAmount));
+            // if the stored product is from the right product category
+            if (category.equals(sortOption))
+                combinedProducts.add(new CombinedProducts(name, brand, category, place, open, openSince, leftCapacity, amount, minAmount));
         }
 
         return combinedProducts;
@@ -137,9 +163,7 @@ public class OverviewController extends BasicController {
     /**
      * Set's the default Values for the Table View.
      */
-    protected void setTableViewValues(){
-        // TODO get the values specified by the right chose box option
-        String sqlStmt = "SELECT id, productId, open, openSince, place, productAmount, amount FROM storedProducts";
-        storedProductsTV.setItems(getCombinedProducts(sqlStmt));
+    protected void setTableViewValues(String sqlStmt, String sortOption){
+        storedProductsTV.setItems(getCombinedProducts(sqlStmt, sortOption));
     }
 }

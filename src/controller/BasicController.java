@@ -66,17 +66,14 @@ public class BasicController {
      */
     protected void setCategoryAction(){
         // changes the place option if the category is changed
-        categoryCB.setOnAction(event -> {
-            if (categoryCB.getSelectionModel().getSelectedItem().equals("Lebensmittel")){
-                placeCB.setItems(placeOptionFood);
-                placeCB.setValue(placeOptionFood.get(0));
-            }
-            else{
-                placeCB.setItems(placeOptionGoods);
-                placeCB.setValue(placeOptionGoods.get(0));
-            }
-
-        });
+        if (categoryCB.getSelectionModel().getSelectedItem().equals("Lebensmittel")){
+            placeCB.setItems(placeOptionFood);
+            placeCB.setValue(placeOptionFood.get(0));
+        }
+        else{
+            placeCB.setItems(placeOptionGoods);
+            placeCB.setValue(placeOptionGoods.get(0));
+        }
     }
 
     /**
