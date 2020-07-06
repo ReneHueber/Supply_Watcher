@@ -1,7 +1,6 @@
 package controller;
 
 import database.ReadFromDb;
-import database.WriteToDb;
 import gui.ProcessFxmlFiles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +13,6 @@ import objects.Product;
 import objects.StoredProduct;
 
 import java.sql.Date;
-import java.util.ArrayList;
 
 /**
  * Controls the Gui elements of the overview Window.
@@ -140,8 +138,10 @@ public class OverviewController extends BasicController {
         ObservableList<CombinedProducts> combinedProducts = FXCollections.observableArrayList();
 
         for (StoredProduct storedProduct : storedProducts){
-            Product product = products.get(storedProduct.getProductId() - 1);
 
+            Product product = getProduct(products, storedProduct.getProductId());
+
+            assert product != null;
             String name = product.getName();
             String brand = product.getBrand();
             String category = product.getCategory();
@@ -165,5 +165,19 @@ public class OverviewController extends BasicController {
      */
     protected void setTableViewValues(String sqlStmt, String sortOption){
         storedProductsTV.setItems(getCombinedProducts(sqlStmt, sortOption));
+    }
+
+    /**
+     * Get's the product with the right product id.
+     * @param products List of all the Products
+     * @param productId Wished product id
+     * @return Product with the right product id
+     */
+    private Product getProduct(ObservableList<Product> products, int productId){
+        for (Product product : products){
+            if (product.getId() == productId)
+                 return product;
+        }
+        return null;
     }
 }

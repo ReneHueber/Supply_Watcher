@@ -81,13 +81,11 @@ public class BasicController {
      * @param input The Text Field to check
      * @param errorLabel The Label witch should display the error
      */
-    protected void basicInputLabelError(TextField input, Label errorLabel, String massage){
-        input.setOnKeyReleased(event -> {
-            if (input.getText().isEmpty())
-                handleErrorLabel(errorLabel, massage, true);
-            else
-                handleErrorLabel(errorLabel, "", false);
-        });
+    protected void checkInputText(TextField input, Label errorLabel, String massage){
+        if (input.getText().isEmpty())
+            handleErrorLabel(errorLabel, massage, true);
+        else
+            handleErrorLabel(errorLabel, "", false);
     }
 
     /**

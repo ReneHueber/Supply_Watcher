@@ -66,31 +66,51 @@ public class StoreArticleController extends BasicController {
         unitCB.setValue(unitOptions.get(0));
 
         confirm.setOnAction(event -> {
+            // check's if the inputs are okay
+            checkInputText(name, nameError, "Name eingeben!");
+            checkInputText(brand, brandError, "Marke eingeben!");
+            checkInputNumber(capacity, capacityError);
 
-            // TODO check if product already existing
+            // if all inputs are okay
             if (!nameError.isVisible() && !brandError.isVisible() && !capacityError.isVisible() && !minimumError.isVisible()){
-                String stmt = "INSERT INTO products(barcode, name, brand, category, place, unit, capacity, minAmount) VALUES (?,?,?,?,?,?,?,?)";
-                String barcodeVale = barcode.getText();
-                String nameValue = name.getText();
-                String brandValue = brand.getText();
-                String categoryValue = categoryCB.getSelectionModel().getSelectedItem();
-                String placeValue = placeCB.getSelectionModel().getSelectedItem();
-                String unitVale = unitCB.getSelectionModel().getSelectedItem();
-                String capacityValue = capacity.getText();
-                String minValue = minimum.getText();
+                // check if the product is already existing
+                String sqlStmt = "SELECT id, barcode, name, brand, category, place, unit, capacity, minAmount FROM products WHERE name = '" + name.getText() +
+                        "' AND brand = '" + brand.getText() + "'";
+                ObservableList<Product> products = ReadFromDb.getProducts(sqlStmt);
+                if (products.size() == 0){
+                    String stmt = "INSERT INTO products(barcode, name, brand, category, place, unit, capacity, minAmount) VALUES (?,?,?,?,?,?,?,?)";
+                    String barcodeVale = barcode.getText();
+                    String nameValue = name.getText();
+                    String brandValue = brand.getText();
+                    String categoryValue = categoryCB.getSelectionModel().getSelectedItem();
+                    String placeValue = placeCB.getSelectionModel().getSelectedItem();
+                    String unitVale = unitCB.getSelectionModel().getSelectedItem();
+                    String capacityValue = capacity.getText();
+                    String minValue = minimum.getText();
 
-                if (minValue.isEmpty())
-                    minValue = "0.0";
+                    if (minValue.isEmpty())
+                        minValue = "0.0";
 
-                WriteToDb.executeWriteStmt(stmt, barcodeVale, nameValue, brandValue, categoryValue, placeValue, unitVale, capacityValue, minValue);
-                openScanResultWindow(true, "Product gespeichert!", nameValue + " eingelagert");
-                // TODO store product in db
+                    // writes the Product to the product database
+                    WriteToDb.executeWriteStmt(stmt, barcodeVale, nameValue, brandValue, categoryValue, placeValue, unitVale, capacityValue, minValue);
+
+                    // reads the product from the database, to get the id, is needed to set the product id
+                    sqlStmt = "SELECT id, barcode, name, brand, category, place, unit, capacity, minAmount FROM products WHERE name = '" + nameValue +
+                            "' AND brand = '" + brandValue + "'";
+                    Product selectedProduct = ReadFromDb.getProducts(sqlStmt).get(0);
+                    // stores the article in the storedProducts Db
+                    storeProduct(selectedProduct);
+                    openScanResultWindow(true, "Product gespeichert!", nameValue + " eingelagert");
+                }
+                else {
+                    storeProduct(products.get(0));
+                    openScanResultWindow(true, "Product OKAY!", products.get(0).getName() + " eingelagert");
+                }
                 clearAllInputs();
             }
         });
 
-        basicInputLabelError(name, nameError, "Name eingeben!");
-        basicInputLabelError(brand, brandError, "Marke eingeben!");
+        brand.setOnKeyReleased(event -> checkInputText(brand, brandError, "Marke eingeben!"));
 
         barcode.setOnKeyReleased(event -> {
             if (event.getCode().toString().equals("ENTER")){
@@ -118,26 +138,31 @@ public class StoreArticleController extends BasicController {
         });
 
         name.setOnKeyReleased(event -> {
-            if (event.getCode().toString().equals("ENTER")){
-                String stmt = "SELECT id, barcode, name, brand, category, place, unit, capacity, minAmount FROM products WHERE name LIKE '%" + name.getText() + "%'";
-                ObservableList<Product> products = ReadFromDb.getProducts(stmt);
+            // text is not empty
+            if (!name.getText().isEmpty()) {
+                handleErrorLabel(nameError, "", false);
+                if (event.getCode().toString().equals("ENTER")) {
+                    String stmt = "SELECT id, barcode, name, brand, category, place, unit, capacity, minAmount FROM products WHERE name LIKE '%" + name.getText() + "%'";
+                    ObservableList<Product> products = ReadFromDb.getProducts(stmt);
 
-                if (products.size() == 0){
-                    brand.requestFocus();
-                    openScanResultWindow(false, "Scan FALSCH!", "Produkt nicht in Datenbank");
-                }
-                else if (products.size() == 1){
-                    setProductValues(products.get(0));
-                    openScanResultWindow(true, "Scan OKAY!", products.get(0).getName() + " eingelagert");
+                    if (products.size() == 0) {
+                        brand.requestFocus();
+                        openScanResultWindow(false, "Scan FALSCH!", "Produkt nicht in Datenbank");
+                    } else if (products.size() == 1) {
+                        setProductValues(products.get(0));
+                        openScanResultWindow(true, "Scan OKAY!", products.get(0).getName() + " eingelagert");
 
-                    // stores the Product into to stored products Db
-                    storeProduct(products.get(0));
+                        // stores the Product into to stored products Db
+                        storeProduct(products.get(0));
 
-                    clearAllInputs();
+                        clearAllInputs();
+                    } else {
+                        openSelectProductWindow(products);
+                    }
                 }
-                else {
-                    openSelectProductWindow(products);
-                }
+            }
+            else {
+                handleErrorLabel(nameError, "Name eingeben!", true);
             }
         });
 
