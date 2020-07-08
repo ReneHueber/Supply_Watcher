@@ -29,6 +29,8 @@ public class OutsourceArticleController extends BasicController {
 
     public void initialize(){
 
+        setupTableView();
+
         // set's the combo box options
         setCategoryOptions();
         unitCB.setItems(unitOptions);

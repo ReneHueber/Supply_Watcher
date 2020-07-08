@@ -1,11 +1,18 @@
 package controller;
 
+import database.ReadFromDb;
 import gui.ProcessFxmlFiles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import objects.CombinedProducts;
+import objects.Product;
+import objects.StoredProduct;
+
+import java.sql.Date;
 
 /**
  * Basic functions and gui elements that are equal at 3 controller classes
@@ -48,6 +55,28 @@ public class BasicController {
     protected ComboBox<String> categoryCB;
     @FXML
     protected ComboBox<String> placeCB;
+
+    // for the overview and outsource controller
+    @FXML
+    protected TableView<CombinedProducts> storedProductsTV;
+    @FXML
+    protected TableColumn<CombinedProducts, String> nameTC;
+    @FXML
+    protected TableColumn<CombinedProducts, String> brandTC;
+    @FXML
+    protected TableColumn<CombinedProducts, String> categoryTC;
+    @FXML
+    protected TableColumn<CombinedProducts, String> placeTC;
+    @FXML
+    protected TableColumn<CombinedProducts, String> openTC;
+    @FXML
+    protected TableColumn<CombinedProducts, Date> openSinceTC;
+    @FXML
+    protected TableColumn<CombinedProducts, Integer> leftCapacityTC;
+    @FXML
+    protected TableColumn<CombinedProducts, Integer> amountTC;
+    @FXML
+    protected TableColumn<CombinedProducts, Integer> minAmountTC;
 
     /**
      * Set's the available options, and the first value for the check boxes
@@ -126,5 +155,83 @@ public class BasicController {
         categoryCB.setValue(categoryOptions.get(0));
         placeCB.setValue(placeOptionFood.get(0));
 
+    }
+
+    /**
+     * Set's the values for the Table Columns
+     */
+    protected void setupTableView(){
+        nameTC.setCellValueFactory(new PropertyValueFactory<>("name"));
+        brandTC.setCellValueFactory(new PropertyValueFactory<>("brand"));
+        categoryTC.setCellValueFactory(new PropertyValueFactory<>("category"));
+        placeTC.setCellValueFactory(new PropertyValueFactory<>("place"));
+        openTC.setCellValueFactory(new PropertyValueFactory<>("openAsString"));
+        openSinceTC.setCellValueFactory(new PropertyValueFactory<>("openSince"));
+        leftCapacityTC.setCellValueFactory(new PropertyValueFactory<>("leftCapacity"));
+        amountTC.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        minAmountTC.setCellValueFactory(new PropertyValueFactory<>("minAmount"));
+    }
+
+    /**
+     * Creates the Combined Products, values of the stored Products and the products Db.
+     * @param stmt Witch stored Products should be selected
+     * @return The combined Products
+     */
+    protected ObservableList<CombinedProducts> getCombinedProducts(String stmt, String sortOption){
+        String sqlAllProducts = "SELECT id, barcode, name, brand, category, place, unit, capacity, minAmount FROM products";
+
+        ObservableList<StoredProduct> storedProducts = ReadFromDb.getStoredProducts(stmt);
+        ObservableList<Product> products = ReadFromDb.getProducts(sqlAllProducts);
+
+        ObservableList<CombinedProducts> combinedProducts = FXCollections.observableArrayList();
+
+        for (StoredProduct storedProduct : storedProducts){
+
+            Product product = getProduct(products, storedProduct.getProductId());
+
+            assert product != null;
+            String barcode = product.getBarcode();
+            String name = product.getName();
+            String brand = product.getBrand();
+            String category = product.getCategory();
+            String place = storedProduct.getPlace();
+            boolean open = storedProduct.isOpen();
+            Date openSince = storedProduct.getOpenSince();
+            int leftCapacity = storedProduct.getProductAmount();
+            int amount = storedProduct.getAmount();
+            float minAmount = product.getMinAmount();
+
+            // if the stored product is from the right product category or no category is needed
+            if (sortOption.equals("barcode")){
+                if (barcode.isEmpty())
+                    combinedProducts.add(new CombinedProducts(name, brand, category, place, open, openSince, leftCapacity, amount, minAmount));
+            }
+            else if (sortOption.equals(category)){
+                combinedProducts.add(new CombinedProducts(name, brand, category, place, open, openSince, leftCapacity, amount, minAmount));
+            }
+        }
+
+        return combinedProducts;
+    }
+
+    /**
+     * Set's the default Values for the Table View.
+     */
+    protected void setTableViewValues(String sqlStmt, String sortOption){
+        storedProductsTV.setItems(getCombinedProducts(sqlStmt, sortOption));
+    }
+
+    /**
+     * Get's the product with the right product id.
+     * @param products List of all the Products
+     * @param productId Wished product id
+     * @return Product with the right product id
+     */
+    private Product getProduct(ObservableList<Product> products, int productId){
+        for (Product product : products){
+            if (product.getId() == productId)
+                return product;
+        }
+        return null;
     }
 }

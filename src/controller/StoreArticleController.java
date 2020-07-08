@@ -256,7 +256,7 @@ public class StoreArticleController extends BasicController {
     /**
      * Set's the Vales for the Table Columns.
      */
-    private void setupTableView(){
+    protected void setupTableView(){
         barcodeTC.setCellValueFactory(new PropertyValueFactory<>("barcode"));
         nameTC.setCellValueFactory(new PropertyValueFactory<>("name"));
         brandTC.setCellValueFactory(new PropertyValueFactory<>("brand"));
