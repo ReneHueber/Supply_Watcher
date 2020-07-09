@@ -186,14 +186,25 @@
             <Insets bottom="5.0" top="-5.0" />
          </VBox.margin>
       </HBox>
-      <Button fx:id="confirm" mnemonicParsing="false" text="Bestätigen">
-         <font>
-            <Font name="System Bold" size="17.0" />
-         </font>
-         <VBox.margin>
-            <Insets bottom="-5.0" />
-         </VBox.margin>
-      </Button>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="60.0">
+         <children>
+            <Button fx:id="clearBtn" mnemonicParsing="false" text="Clear">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Button>
+            <Button fx:id="selectBtn" mnemonicParsing="false" text="Auswählen">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Button>
+            <Button fx:id="storeBtn" mnemonicParsing="false" text="Einlagern">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
       <Label text="Letzte Artikel ohne Barcode">
          <font>
             <Font name="System Bold" size="20.0" />

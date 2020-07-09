@@ -164,11 +164,25 @@
             <Insets bottom="5.0" top="-4.0" />
          </VBox.margin>
       </HBox>
-      <Button fx:id="confirm" mnemonicParsing="false" text="Bestätigen">
-         <font>
-            <Font name="System Bold" size="17.0" />
-         </font>
-      </Button>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="60.0">
+         <children>
+            <Button fx:id="clearBtn" mnemonicParsing="false" text="Clear">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Button>
+            <Button fx:id="selectBtn" mnemonicParsing="false" text="Auswählen">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Button>
+            <Button fx:id="outsourceBtn" mnemonicParsing="false" text="Auslagern">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
       <Label text="Eingelagerte Artikel ohne Barecode">
          <font>
             <Font name="System Bold" size="22.0" />

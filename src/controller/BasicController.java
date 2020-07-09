@@ -56,6 +56,11 @@ public class BasicController {
     @FXML
     protected ComboBox<String> placeCB;
 
+    @FXML
+    protected Button clearBtn;
+    @FXML
+    protected Button selectBtn;
+
     // for the overview and outsource controller
     @FXML
     protected TableView<CombinedProducts> storedProductsTV;
@@ -154,7 +159,6 @@ public class BasicController {
         brand.setText("");
         categoryCB.setValue(categoryOptions.get(0));
         placeCB.setValue(placeOptionFood.get(0));
-
     }
 
     /**

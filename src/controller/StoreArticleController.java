@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import objects.Product;
 import objects.StoredProduct;
 
@@ -30,7 +31,7 @@ public class StoreArticleController extends BasicController {
     private Label minimumError;
 
     @FXML
-    private Button confirm;
+    private Button storeBtn;
 
     @FXML
     private TableView<Product> productsTV;
@@ -65,7 +66,7 @@ public class StoreArticleController extends BasicController {
         unitCB.setItems(unitOptions);
         unitCB.setValue(unitOptions.get(0));
 
-        confirm.setOnAction(event -> {
+        storeBtn.setOnAction(event -> {
             // check's if the inputs are okay
             checkInputText(name, nameError, "Name eingeben!");
             checkInputText(brand, brandError, "Marke eingeben!");
@@ -113,7 +114,7 @@ public class StoreArticleController extends BasicController {
         brand.setOnKeyReleased(event -> checkInputText(brand, brandError, "Marke eingeben!"));
 
         barcode.setOnKeyReleased(event -> {
-            if (event.getCode().toString().equals("ENTER")){
+            if (event.getCode().equals(KeyCode.ENTER)){
                 String stmt = "SELECT id, barcode, name, brand, category, place, unit, capacity, minAmount FROM products WHERE barcode = '" + barcode.getText() + "'";
                 ObservableList<Product> products = ReadFromDb.getProducts(stmt);
 
@@ -141,7 +142,7 @@ public class StoreArticleController extends BasicController {
             // text is not empty
             if (!name.getText().isEmpty()) {
                 handleErrorLabel(nameError, "", false);
-                if (event.getCode().toString().equals("ENTER")) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
                     String stmt = "SELECT id, barcode, name, brand, category, place, unit, capacity, minAmount FROM products WHERE name LIKE '%" + name.getText() + "%'";
                     ObservableList<Product> products = ReadFromDb.getProducts(stmt);
 
@@ -184,6 +185,15 @@ public class StoreArticleController extends BasicController {
                 handleErrorLabel(minimumError, "", false);
             }
 
+        });
+
+        clearBtn.setOnAction(event -> {
+            clearAllInputs();
+            // reset's all the errors because all the inputs are empty
+            handleErrorLabel(nameError, "", false);
+            handleErrorLabel(brandError, "", false);
+            handleErrorLabel(capacityError, "", false);
+            handleErrorLabel(minimumError, "", false);
         });
     }
 

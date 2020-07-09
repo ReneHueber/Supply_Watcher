@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 
 public class OutsourceArticleController extends BasicController {
 
@@ -21,7 +22,7 @@ public class OutsourceArticleController extends BasicController {
     private Label amountError;
 
     @FXML
-    private Button confirm;
+    private Button outsourceBtn;
 
     @FXML
     // TODO changes to real object
@@ -42,11 +43,21 @@ public class OutsourceArticleController extends BasicController {
         });
 
         // handles the click of the confirm Button
-        confirm.setOnAction(event -> {
+        outsourceBtn.setOnAction(event -> {
             OverviewController controller = openOverviewWindow();
         });
 
-        name.setOnKeyReleased(event -> checkInputText(name, nameError, "Name eingeben!"));
+        barcode.setOnKeyReleased(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)){
+
+            }
+        });
+
+        name.setOnKeyReleased(event -> {
+            checkInputText(name, nameError, "Name eingeben!");
+
+        });
+
         brand.setOnKeyReleased(event -> checkInputText(brand, brandError, "Marke eingeben!"));
 
 
@@ -90,6 +101,10 @@ public class OutsourceArticleController extends BasicController {
                     handleErrorLabel(amountError, "", false);
             } catch (NumberFormatException ignored){
             }
+        });
+
+        clearBtn.setOnAction(event -> {
+            // TODO function to clear all inputs
         });
     }
 
