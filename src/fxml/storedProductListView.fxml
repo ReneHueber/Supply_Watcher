@@ -6,16 +6,16 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="parentLayout" alignment="CENTER" prefWidth="1024.0" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.StoredProductListViewCell">
+<GridPane fx:id="parentLayout" alignment="CENTER" prefWidth="1024.0" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
-    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="110.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
-      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="135.0" />
+      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="70.0" />
+      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
+      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="135.0" />
+      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="80.0" />
+      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="35.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -35,17 +35,17 @@
       </Label>
       <Label fx:id="barcodeLb" text="Label" GridPane.columnIndex="1">
          <font>
-            <Font size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
       <Label fx:id="nameLb" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <font>
-            <Font size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
       <Label fx:id="brandLb" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <font>
-            <Font size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
       <Label text="Name:" GridPane.rowIndex="1">
@@ -58,29 +58,29 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <Label text="Fullmenge:" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Label text="Menge Ges.:" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <Label text="Menge:" GridPane.columnIndex="2" GridPane.rowIndex="2">
+      <Label text="Menge Off.:" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
       <Label fx:id="categoryLb" text="Label" GridPane.columnIndex="3">
          <font>
-            <Font size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Label text="Ort geschlossen:" GridPane.columnIndex="4">
+      <Label text="Ort Ges." GridPane.columnIndex="4">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
       <Label fx:id="placeClosedLb" text="Label" GridPane.columnIndex="5">
          <font>
-            <Font size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
       <Label prefHeight="21.0" prefWidth="121.0" text="Geschlossen:" GridPane.columnIndex="6">
@@ -90,12 +90,12 @@
       </Label>
       <Label fx:id="amountClosedLb" text="Label" GridPane.columnIndex="7">
          <font>
-            <Font size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
       <Label fx:id="capacityLb" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="1">
          <font>
-            <Font size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
       <Label text="Ort offen:" GridPane.columnIndex="4" GridPane.rowIndex="1">
@@ -105,7 +105,7 @@
       </Label>
       <Label fx:id="placeOpenLb" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="1">
          <font>
-            <Font size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
       <Label text="Offen:" GridPane.columnIndex="6" GridPane.rowIndex="1">
@@ -115,12 +115,12 @@
       </Label>
       <Label fx:id="amountOpenLb" text="Label" GridPane.columnIndex="7" GridPane.rowIndex="1">
          <font>
-            <Font size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="amountLb" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="2">
+      <Label fx:id="amountLeftLb" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="2">
          <font>
-            <Font size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
       <Label text="Offen seit:" GridPane.columnIndex="4" GridPane.rowIndex="2">
@@ -130,7 +130,7 @@
       </Label>
       <Label fx:id="openSinceLb" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="2">
          <font>
-            <Font size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
       <Label text="Mindestens:" GridPane.columnIndex="6" GridPane.rowIndex="2">
@@ -140,7 +140,7 @@
       </Label>
       <Label fx:id="minAmountLb" text="Label" GridPane.columnIndex="7" GridPane.rowIndex="2">
          <font>
-            <Font size="17.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
    </children>

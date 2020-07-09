@@ -4,11 +4,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -86,18 +85,6 @@
             <Insets bottom="5.0" />
          </VBox.margin>
       </HBox>
-      <TableView fx:id="storedProductsTV" prefHeight="328.0" prefWidth="1024.0">
-        <columns>
-          <TableColumn fx:id="nameTC" prefWidth="165.0" text="Name" />
-          <TableColumn fx:id="brandTC" prefWidth="160.0" text="Marke" />
-            <TableColumn fx:id="categoryTC" prefWidth="159.0" text="Kategorie" />
-            <TableColumn fx:id="placeTC" prefWidth="127.0" text="Ort" />
-            <TableColumn fx:id="openTC" prefWidth="71.0" text="Offen" />
-            <TableColumn fx:id="openSinceTC" prefWidth="101.0" text="seit" />
-            <TableColumn fx:id="leftCapacityTC" prefWidth="99.0" text="Füllmenge" />
-            <TableColumn fx:id="amountTC" prefWidth="81.0" text="Menge" />
-            <TableColumn fx:id="minAmountTC" prefWidth="60.0" text="Min" />
-        </columns>
-      </TableView>
+      <ListView fx:id="storedProductsLv" prefHeight="336.0" prefWidth="1024.0" />
    </children>
 </VBox>

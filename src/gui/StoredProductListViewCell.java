@@ -29,7 +29,7 @@ public class StoredProductListViewCell extends ListCell<CombinedProducts> {
     @FXML
     private Label capacityLb;
     @FXML
-    private Label amountLb;
+    private Label amountLeftLb;
 
     @FXML
     private Label placeClosedLb;
@@ -76,17 +76,17 @@ public class StoredProductListViewCell extends ListCell<CombinedProducts> {
             }
 
             // set's the values for the gui elements
-            barcodeLb.setText("");
+            barcodeLb.setText(product.getBarcode());
             nameLb.setText(product.getName());
             brandLb.setText(product.getBrand());
             categoryLb.setText(product.getCategory());
-            capacityLb.setText(Integer.toString(product.getLeftCapacity()));
-            amountLb.setText(Integer.toString(product.getAmount()));
-            placeClosedLb.setText(product.getPlace());
-            placeOpenLb.setText(product.getPlace());
+            capacityLb.setText(product.getCapacityWithUnit());
+            amountLeftLb.setText(product.getLeftCapacityWithUnit());
+            placeClosedLb.setText(product.getPlaceClosed());
+            placeOpenLb.setText(product.getPlaceOpen());
             openSinceLb.setText(product.getOpenSince().toString());
-            amountClosedLb.setText("");
-            amountOpenLb.setText("");
+            amountClosedLb.setText(Integer.toString(product.getAmountClosed()));
+            amountOpenLb.setText(Float.toString(product.getAmountOpen()));
             minAmountLb.setText(Float.toString(product.getMinAmount()));
 
             // set's the custom layout

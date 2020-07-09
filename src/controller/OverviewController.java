@@ -1,11 +1,16 @@
 package controller;
 
 import gui.ProcessFxmlFiles;
+import gui.StoredProductListViewCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import objects.CombinedProducts;
+
+import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  * Controls the Gui elements of the overview Window.
@@ -27,9 +32,13 @@ public class OverviewController extends BasicController {
     @FXML
     private ComboBox<String> sortByCB;
 
+    @FXML
+    private ListView<CombinedProducts> storedProductsLv;
+
 
     public void initialize(){
-        setupTableView();
+
+        setupListView();
 
         // set's the options for the check boxes
         setCategoryOptions();
@@ -78,6 +87,13 @@ public class OverviewController extends BasicController {
             }
             storedProductsTV.sort();
         });
+    }
+
+    protected void setupListView(){
+        storedProductsLv.setCellFactory(StoredProductListViewCell -> new StoredProductListViewCell());
+        String sqlStmt = "SELECT id, productId, open, openSince, place, productAmount, amount FROM storedProducts" +
+                " WHERE place = 'Kühlschrank'";
+        storedProductsLv.setItems(getCombinedProducts(sqlStmt, "Lebensmittel"));
     }
 
 }

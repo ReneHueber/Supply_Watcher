@@ -12,7 +12,8 @@ public class Main extends Application {
         OverviewController controller = (OverviewController) overViewWindow.openInExistingStage(primaryStage);
         String sqlStmt = "SELECT id, productId, open, openSince, place, productAmount, amount FROM storedProducts" +
                 " WHERE place = 'Kühlschrank'";
-        controller.setTableViewValues(sqlStmt, "Lebensmittel");
+        //controller.setTableViewValues(sqlStmt, "Lebensmittel");
+        // controller.setupListView();
     }
 
 

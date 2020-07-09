@@ -5,4 +5,5 @@ module Supply.Watcher {
 
     opens controller;
     opens objects to javafx.base;
+    opens gui;
 }
