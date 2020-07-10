@@ -84,7 +84,7 @@ public class StoredProductListViewCell extends ListCell<CombinedProducts> {
             amountLeftLb.setText(product.getLeftCapacityWithUnit());
             placeClosedLb.setText(product.getPlaceClosed());
             placeOpenLb.setText(product.getPlaceOpen());
-            openSinceLb.setText(product.getOpenSince().toString());
+            openSinceLb.setText(product.getOpenSinceString());
             amountClosedLb.setText(Integer.toString(product.getAmountClosed()));
             amountOpenLb.setText(Float.toString(product.getAmountOpen()));
             minAmountLb.setText(Float.toString(product.getMinAmount()));

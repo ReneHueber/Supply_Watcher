@@ -198,20 +198,25 @@ public class BasicController {
             String name = product.getName();
             String brand = product.getBrand();
             String category = product.getCategory();
-            String place = storedProduct.getPlace();
-            boolean open = storedProduct.isOpen();
+            int capacity = product.getCapacity();
+            int leftCapacity = storedProduct.getLeftCapacity();
+            String placeClosed = product.getPlace();
+            String placeOpen = storedProduct.getPlaceOpen();
             Date openSince = storedProduct.getOpenSince();
-            int leftCapacity = storedProduct.getProductAmount();
-            int amount = storedProduct.getAmount();
+            int amountClosed = storedProduct.getAmountClosed();
+            float amountOpen = storedProduct.getAmountOpen();
             float minAmount = product.getMinAmount();
+            String unit = product.getUnit();
 
             // if the stored product is from the right product category or no category is needed
             if (sortOption.equals("barcode")){
                 if (barcode.isEmpty())
-                    combinedProducts.add(new CombinedProducts(name, brand, category, place, open, openSince, leftCapacity, amount, minAmount));
+                    combinedProducts.add(new CombinedProducts(barcode, name, brand, category, capacity, leftCapacity,
+                            placeClosed, placeOpen, openSince, amountClosed, amountOpen, minAmount, unit));
             }
             else if (sortOption.equals(category)){
-                combinedProducts.add(new CombinedProducts(name, brand, category, place, open, openSince, leftCapacity, amount, minAmount));
+                combinedProducts.add(new CombinedProducts(barcode, name, brand, category, capacity, leftCapacity,
+                        placeClosed, placeOpen, openSince, amountClosed, amountOpen, minAmount, unit));
             }
         }
 

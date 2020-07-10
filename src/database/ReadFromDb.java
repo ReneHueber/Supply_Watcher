@@ -51,13 +51,14 @@ public class ReadFromDb {
                 while (rs.next()){
                     int id = rs.getInt("id");
                     int productId = rs.getInt("productId");
-                    boolean open = rs.getBoolean("open");
+                    int leftCapacity = rs.getInt("leftCapacity");
+                    String placeOpen = rs.getString("placeOpen");
                     Date openSince = rs.getDate("openSince");
-                    String place = rs.getString("place");
-                    int productAmount = rs.getInt("productAmount");
-                    int amount = rs.getInt("amount");
+                    int amountClosed = rs.getInt("amountClosed");
+                    float amountOpen = rs.getFloat("amountOpen");
 
-                    storedProducts.add(new StoredProduct(id, productId, open, openSince, place, productAmount, amount));
+                    storedProducts.add(new StoredProduct(id, productId, leftCapacity, placeOpen,
+                            openSince, amountClosed, amountOpen));
                 }
             } catch (SQLException e){
                 System.out.println(e.getMessage());

@@ -291,8 +291,8 @@ public class StoreArticleController extends BasicController {
      * @return A list of all stored Product with the passed Product id.
      */
     private ObservableList<StoredProduct> getStoredProducts(int productId){
-        String stmt = "SELECT id, productId, open, openSince, place, productAmount, amount FROM storedProducts WHERE productId = " + productId
-                + " AND open = false";
+        String stmt = "SELECT id, productId, leftCapacity, placeOpen, openSince, amountClosed, amountOpen FROM storedProducts " +
+                "WHERE productId = " + productId;
         return ReadFromDb.getStoredProducts(stmt);
     }
 
@@ -305,13 +305,13 @@ public class StoreArticleController extends BasicController {
 
         ObservableList<StoredProduct> storedProducts = getStoredProducts(selectedProduct.getId());
         if (storedProducts.size() > 0){
-            stmt = "UPDATE storedProducts SET amount = ? WHERE id = " + storedProducts.get(0).getId();
-            WriteToDb.executeWriteStmt(stmt, Integer.toString(storedProducts.get(0).getAmount() + 1));
+            stmt = "UPDATE storedProducts SET amountClosed = ? WHERE id = " + storedProducts.get(0).getId();
+            WriteToDb.executeWriteStmt(stmt, Integer.toString(storedProducts.get(0).getAmountClosed() + 1));
         }
         else {
-            stmt = "INSERT INTO storedProducts(productId, open, openSince, place, productAmount, amount) VALUES (?,?,?,?,?,?)";
-            WriteToDb.executeWriteStmt(stmt, Integer.toString(selectedProduct.getId()), Integer.toString(0), null, selectedProduct.getPlace(),
-                    Integer.toString(selectedProduct.getCapacity()), Integer.toString(1));
+            stmt = "INSERT INTO storedProducts(productId, leftCapacity, placeOpen, openSince, amountClosed, amountOpen) VALUES (?,?,?,?,?,?)";
+            WriteToDb.executeWriteStmt(stmt, Integer.toString(selectedProduct.getId()), Integer.toString(selectedProduct.getCapacity()),
+                    selectedProduct.getPlace(), null, Integer.toString(1), Integer.toString(0));
         }
     }
 }

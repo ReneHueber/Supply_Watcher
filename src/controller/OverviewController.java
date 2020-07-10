@@ -9,9 +9,6 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import objects.CombinedProducts;
 
-import java.sql.Date;
-import java.time.LocalDate;
-
 /**
  * Controls the Gui elements of the overview Window.
  */
@@ -91,8 +88,8 @@ public class OverviewController extends BasicController {
 
     protected void setupListView(){
         storedProductsLv.setCellFactory(StoredProductListViewCell -> new StoredProductListViewCell());
-        String sqlStmt = "SELECT id, productId, open, openSince, place, productAmount, amount FROM storedProducts" +
-                " WHERE place = 'Kühlschrank'";
+        String sqlStmt = "SELECT id, productId, leftCapacity, placeOpen, openSince, amountClosed, amountOpen FROM storedProducts" +
+                " WHERE placeOpen = 'Kühlschrank'";
         storedProductsLv.setItems(getCombinedProducts(sqlStmt, "Lebensmittel"));
     }
 

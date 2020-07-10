@@ -72,6 +72,13 @@ public class CombinedProducts {
         return openSince;
     }
 
+    public String getOpenSinceString(){
+        if (openSince != null)
+            return openSince.toString();
+        else
+            return "";
+    }
+
     public int getAmountClosed() {
         return amountClosed;
     }

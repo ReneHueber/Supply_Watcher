@@ -6,20 +6,20 @@ public class StoredProduct {
 
     private final int id;
     private final int productId;
-    private final boolean open;
+    private final int leftCapacity;
+    private final String placeOpen;
     private final Date openSince;
-    private final String place;
-    private final int productAmount;
-    private final int amount;
+    private final int amountClosed;
+    private final float amountOpen;
 
-    public StoredProduct(int id, int productId, boolean open, Date openSince, String place, int productAmount, int amount) {
+    public StoredProduct(int id, int productId, int leftCapacity, String placeOpen, Date openSince, int productAmount, float amountOpen) {
         this.id = id;
         this.productId = productId;
-        this.open = open;
+        this.leftCapacity = leftCapacity;
+        this.placeOpen = placeOpen;
         this.openSince = openSince;
-        this.place = place;
-        this.productAmount = productAmount;
-        this.amount = amount;
+        this.amountClosed = productAmount;
+        this.amountOpen = amountOpen;
     }
 
     public int getId(){
@@ -30,23 +30,23 @@ public class StoredProduct {
         return productId;
     }
 
-    public boolean isOpen() {
-        return open;
+    public int getLeftCapacity() {
+        return leftCapacity;
+    }
+
+    public String getPlaceOpen() {
+        return placeOpen;
     }
 
     public Date getOpenSince() {
         return openSince;
     }
 
-    public String getPlace() {
-        return place;
+    public int getAmountClosed() {
+        return amountClosed;
     }
 
-    public int getProductAmount() {
-        return productAmount;
-    }
-
-    public int getAmount() {
-        return amount;
+    public float getAmountOpen() {
+        return amountOpen;
     }
 }
