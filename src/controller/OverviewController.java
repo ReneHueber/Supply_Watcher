@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import objects.CombinedProducts;
 
@@ -55,22 +56,23 @@ public class OverviewController extends BasicController {
             ProcessFxmlFiles outsourceArticle = new ProcessFxmlFiles("/fxml/outsource.fxml", "Artikel Auslagern");
             Stage stage = (Stage) menuBar.getScene().getWindow();
             OutsourceArticleController controller = (OutsourceArticleController) outsourceArticle.openInExistingStage(stage);
-            controller.setTableViewValues("SELECT id, productId, open, openSince, place, productAmount, amount FROM storedProducts", "barcode");
+            controller.setTableViewValues("SELECT id, productId, leftCapacity, placeOpen, openSince, amountClosed, amountOpen FROM storedProducts", "barcode");
         });
 
         categoryCB.setOnAction(event -> {
             setCategoryAction();
-            String sqlStmt = "SELECT id, productId, open, openSince, place, productAmount, amount FROM storedProducts" +
-                    " WHERE place = '" + placeCB.getSelectionModel().getSelectedItem() + "'";
-            setTableViewValues(sqlStmt, categoryCB.getSelectionModel().getSelectedItem());
+            String sqlStmt = "SELECT id, productId, leftCapacity, placeOpen, openSince, amountClosed, amountOpen FROM storedProducts" +
+                    " WHERE placeOpen = '" + placeCB.getSelectionModel().getSelectedItem() + "'";
+            setListViewValues(sqlStmt, categoryCB.getSelectionModel().getSelectedItem());
         });
 
         placeCB.setOnAction(event -> {
-            String sqlStmt = "SELECT id, productId, open, openSince, place, productAmount, amount FROM storedProducts" +
-                    " WHERE place = '" + placeCB.getSelectionModel().getSelectedItem() + "'";
-            setTableViewValues(sqlStmt, categoryCB.getSelectionModel().getSelectedItem());
+            String sqlStmt = "SELECT id, productId, leftCapacity, placeOpen, openSince, amountClosed, amountOpen FROM storedProducts" +
+                    " WHERE placeOpen = '" + placeCB.getSelectionModel().getSelectedItem() + "'";
+            setListViewValues(sqlStmt, categoryCB.getSelectionModel().getSelectedItem());
         });
 
+        // TODO make it work with the list view
         sortByCB.setOnAction(event -> {
             storedProductsTV.getSortOrder().clear();
             switch(sortByCB.getSelectionModel().getSelectedItem()){
@@ -86,11 +88,27 @@ public class OverviewController extends BasicController {
         });
     }
 
+    /**
+     * Setup the List view, set's the default values and the placeholder.
+     */
     protected void setupListView(){
         storedProductsLv.setCellFactory(StoredProductListViewCell -> new StoredProductListViewCell());
         String sqlStmt = "SELECT id, productId, leftCapacity, placeOpen, openSince, amountClosed, amountOpen FROM storedProducts" +
                 " WHERE placeOpen = 'Kühlschrank'";
         storedProductsLv.setItems(getCombinedProducts(sqlStmt, "Lebensmittel"));
+
+        Label placeholder = new Label("Keine Produkte Eingelagert");
+        placeholder.setFont(new Font(28));
+        storedProductsLv.setPlaceholder(placeholder);
+    }
+
+    /**
+     * Set's the Values for the List view, get's the combined products.
+     * @param sqlStmt What products should be selected
+     * @param sortOption The sorting of the products
+     */
+    private void setListViewValues(String sqlStmt, String sortOption){
+        storedProductsLv.setItems(getCombinedProducts(sqlStmt, sortOption));
     }
 
 }

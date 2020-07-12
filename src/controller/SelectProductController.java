@@ -42,7 +42,7 @@ public class SelectProductController {
                 // stores the product into the db
                 parentController.setProductValues(selectedProduct);
                 parentController.storeProduct(selectedProduct);
-                parentController.openScanResultWindow(true, "Produkt gewählt!", selectedProduct.getName() + "eingelagert");
+                parentController.openScanResultWindow(true, "Produkt gewählt!", selectedProduct.getName() + " eingelagert");
                 parentController.clearAllInputs();
                 currentStage.close();
             }
